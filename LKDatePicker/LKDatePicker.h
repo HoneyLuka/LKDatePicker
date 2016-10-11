@@ -23,7 +23,9 @@ typedef enum {
 @property (nonatomic, strong, readonly) NSDate *date;
 @property (nonatomic, copy, readonly) NSString *dateString;
 
-@property (nonatomic, copy) LKDatePickerHandler onChanged;
+@property (nonatomic, copy) LKDatePickerHandler onShow;
+@property (nonatomic, copy) LKDatePickerHandler onChange;
+@property (nonatomic, copy) LKDatePickerHandler onClose;
 
 #pragma mark - Input
 

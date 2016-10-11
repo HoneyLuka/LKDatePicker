@@ -289,6 +289,10 @@ const CGFloat kLKDatePickerToolBarHeight = 40.f;
     [UIView animateWithDuration:0.25f animations:^{
         self.alpha = 1;
         self.contentView.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished) {
+        if (self.onShow) {
+            self.onShow(self);
+        }
     }];
 }
 
@@ -337,6 +341,9 @@ const CGFloat kLKDatePickerToolBarHeight = 40.f;
                                                                 CGRectGetHeight(self.contentView.bounds));
         self.alpha = 0;
     } completion:^(BOOL finished) {
+        if (self.onClose) {
+            self.onClose(self);
+        }
         [self removeFromSuperview];
     }];
 }
@@ -344,6 +351,7 @@ const CGFloat kLKDatePickerToolBarHeight = 40.f;
 - (void)resetAll
 {
     [self reloadDefaultDate];
+    [self updateDate];
     [self resetComponents:kCalendarUnitsAll];
 }
 
@@ -358,8 +366,8 @@ const CGFloat kLKDatePickerToolBarHeight = 40.f;
     
     if (unit & NSCalendarUnitMonth) {
         NSInteger index = [self calculateRealIndex:self.month - 1
-                          circulateTimes:MONTH_CIRCULATE_TIMES
-                            elementCount:MONTH_COUNT];
+                                    circulateTimes:MONTH_CIRCULATE_TIMES
+                                      elementCount:MONTH_COUNT];
         [self.pickerView selectRow:index inComponent:kLKDatePickerMonthComponent animated:NO];
     }
     
@@ -581,7 +589,7 @@ const CGFloat kLKDatePickerToolBarHeight = 40.f;
             [pickerView reloadComponent:kLKDatePickerDayComponent];
             [self resetComponents:NSCalendarUnitYear | NSCalendarUnitDay];
             break;
-        
+            
         case kLKDatePickerMonthComponent:
             self.month = row % MONTH_COUNT + 1;
             
@@ -618,11 +626,11 @@ const CGFloat kLKDatePickerToolBarHeight = 40.f;
     
     [self updateDate];
     
-    if (self.onChanged) {
-        self.onChanged(self);
+    if (self.onChange) {
+        self.onChange(self);
     }
-//    NSLog(@"%ld年, %ld月, %ld日, %ld时, %ld分",
-//          self.year, self.month, self.day, self.hour, self.minute);
+    //    NSLog(@"%ld年, %ld月, %ld日, %ld时, %ld分",
+    //          self.year, self.month, self.day, self.hour, self.minute);
 }
 
 @end
